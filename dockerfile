@@ -18,7 +18,7 @@ ADD ./config/settings.xml ./m2/settings.xml
 
 # Compile Components
 RUN git clone https://github.com/ant-media/ant-media-server-parent.git
-RUN cd Ant-Media-Server-Parent && mvn clean install -Dgpg.skip=true
+RUN cd ant-media-server-parent && mvn clean install -Dgpg.skip=true
 
 RUN git clone https://github.com/ant-media/Ant-Media-Server-Common.git
 RUN cd Ant-Media-Server-Common && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
