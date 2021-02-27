@@ -58,6 +58,7 @@ RUN rm -rf ./ams-build/Ant-Media-Server-Parent && \
 
 ## Custom config to make it work as expected - experimental
 WORKDIR /usr/local/antmedia/
+ADD ./scripts/functions.sh ./conf/functions.sh
 ADD ./config/red5-default.xml ./webapps/red5-default.xml
 
 ## Set some container specifics
