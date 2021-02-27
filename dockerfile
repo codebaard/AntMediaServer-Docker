@@ -5,30 +5,24 @@ FROM ubuntu:20.04
 
 LABEL maintainer="hello@juliusneudecker.com"
 
-#ENV USER antmedia
-#RUN adduser --disabled-password --gecos '' antmedia
 WORKDIR /home/ams-build
 
-RUN apt-get update && apt-get upgrade -y
-
 ## Build Server from source
-
 # Setup local environment
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
-RUN apt-get install -y git default-jdk maven
-ADD ./config/settings.xml ./m2/settings.xml
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y tzdata git default-jdk maven
+ADD ./config/settings.xml /home/m2/settings.xml
 
 # Compile Components
-RUN git clone https://github.com/ant-media/ant-media-server-parent.git
+RUN git clone https://github.com/ant-media/ant-media-server-parent.git \
+    && git clone https://github.com/ant-media/Ant-Media-Server-Common.git \
+    && git clone https://github.com/ant-media/Ant-Media-Server-Service.git \
+    && git clone https://github.com/ant-media/red5-plugins.git
+
 RUN cd ant-media-server-parent && mvn clean install -Dgpg.skip=true
-
-RUN git clone https://github.com/ant-media/Ant-Media-Server-Common.git
 RUN cd Ant-Media-Server-Common && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-
-RUN git clone https://github.com/ant-media/Ant-Media-Server-Service.git
 RUN cd Ant-Media-Server-Service && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-
-RUN git clone https://github.com/ant-media/red5-plugins.git
 RUN cd red5-plugins/tomcat && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
 
 WORKDIR /home
@@ -38,10 +32,6 @@ RUN git clone https://github.com/ant-media/Ant-Media-Server.git
 WORKDIR /home/Ant-Media-Server
 RUN mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
 RUN chmod +x repackage_community.sh && ./repackage_community.sh
-
-# If everthing goes well, a new packaged Ant Media Server(ant-media-server-x.x.x.zip) file will be created in Ant-Media-Server/target directory
-
-RUN cd ./target && ls -la
 
 ## Build Server Image
 
@@ -53,20 +43,19 @@ RUN apt-get install -y libx11-dev \
 	&& apt-get install -y libcap2
 
 RUN wget https://raw.githubusercontent.com/ant-media/Scripts/master/install_ant-media-server.sh \
-    && chmod 755 install_ant-media-server.sh
-
-RUN ./install_ant-media-server.sh -i ant-media-server-*.zip -s false
+    && chmod 755 install_ant-media-server.sh \
+    && ./install_ant-media-server.sh -i ant-media-server-*.zip -s false
 
 ## clean up
-RUN rm $(ls | grep zip) && rm install_ant-media-server.sh
-RUN apt-get autoremove --purge -y git maven
+RUN rm ant-media-server-*.zip && rm install_ant-media-server.sh \
+    && apt-get autoremove --purge -y git maven
 
 WORKDIR /home
-RUN rm -rf ./ams-build/Ant-Media-Server-Parent
-RUN rm -rf ./ams-build/Ant-Media-Server-Common
-RUN rm -rf ./ams-build/Ant-Media-Server-Service
-RUN rm -rf ./ams-build/red5-plugins
-RUN rm -rf Ant-Media-Server
+RUN rm -rf ./ams-build/Ant-Media-Server-Parent && \
+    rm -rf ./ams-build/Ant-Media-Server-Common && \
+    rm -rf ./ams-build/Ant-Media-Server-Service && \
+    rm -rf ./ams-build/red5-plugins && \
+    rm -rf Ant-Media-Server
 
 ## Custom config to make it work as expected - experimental
 WORKDIR /usr/local/antmedia/
