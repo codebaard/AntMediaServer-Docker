@@ -11,7 +11,7 @@ WORKDIR /home/ams-build
 # Setup local environment
 RUN  apt-get update && apt-get upgrade -y \
     && DEBIAN_FRONTEND="noninteractive" apt-get install tzdata \
-    && apt-get install -y tzdata git default-jdk maven
+    && apt-get install -y tzdata git default-jdk maven net-tools
 ADD ./config/settings.xml /home/m2/settings.xml
 
 # Compile Components
@@ -67,5 +67,9 @@ VOLUME /usr/local/antmedia/log
 EXPOSE 9999
 EXPOSE 5080
 
+ENV MONGO_HOST=default
+ENV MONGO_USER=default
+ENV MONGO_PW=default
+
 #ENTRYPOINT [ "./start.sh", "-m", "standalone" ]
-ENTRYPOINT [ "./start.sh", "-m", "cluster", "-h",  "mongo", "-u", "admin", "-p", "J9BfPZOSaQJRQpGvDkQz"]
+ENTRYPOINT [ "./start.sh", "-m", "cluster", "-h",  MONGO_HOST, "-u", MONGO_USER, "-p", MONGO_PW]
