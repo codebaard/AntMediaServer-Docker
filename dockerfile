@@ -5,8 +5,8 @@ FROM ubuntu:20.04
 
 LABEL maintainer="hello@juliusneudecker.com"
 
-ENV USER antmedia
-RUN adduser --disabled-password --gecos '' antmedia
+#ENV USER antmedia
+#RUN adduser --disabled-password --gecos '' antmedia
 WORKDIR /home/ams-build
 
 RUN apt-get update && apt-get upgrade -y
@@ -48,16 +48,14 @@ RUN cd ./target && ls -la
 RUN mkdir /home/ams-dist && cp ./target/ant-media-server-community-*.zip /home/ams-dist/
 WORKDIR /home/ams-dist
 
-RUN echo $(ls) > filename
-
 RUN apt-get install -y libx11-dev \
 	&& apt-get install -y wget \
 	&& apt-get install -y libcap2
 
-ADD ./scripts/install_ant-media-server.sh ./install_ant-media-server.sh
-RUN chmod +x install_ant-media-server.sh
+RUN wget https://raw.githubusercontent.com/ant-media/Scripts/master/install_ant-media-server.sh \
+    && chmod 755 install_ant-media-server.sh
 
-RUN ./install_ant-media-server.sh
+RUN ./install_ant-media-server.sh -i ant-media-server-*.zip -s false
 
 ## clean up
 RUN rm $(ls | grep zip) && rm install_ant-media-server.sh
