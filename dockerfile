@@ -59,7 +59,7 @@ RUN ./install_ant-media-server.sh -i ant-media-server-*.zip -s false
 
 ## clean up
 RUN rm $(ls | grep zip) && rm install_ant-media-server.sh
-RUN apt-get autoremove --purge git maven
+RUN apt-get autoremove --purge -y git maven
 
 WORKDIR /home
 RUN rm -rf ./ams-build/Ant-Media-Server-Parent
