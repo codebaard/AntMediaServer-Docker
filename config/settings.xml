@@ -6,6 +6,10 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <gpg.executable>/usr/bin/gpg</gpg.executable>
+                <gpg.passphrase>abc</gpg.passphrase>
+            </properties>
             <repositories>
                 <repository>
                     <id>central</id>
