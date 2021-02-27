@@ -66,4 +66,4 @@ VOLUME /usr/local/antmedia/log
 EXPOSE 9999
 EXPOSE 5080
 
-ENTRYPOINT [ "start", "-m", "standalone" ]
+CMD [ "start", "-m", "standalone" ]
