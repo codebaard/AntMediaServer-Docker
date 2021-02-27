@@ -121,7 +121,7 @@ while getopts 'i:s:r:h' option
 do
   case "${option}" in
     s) INSTALL_SERVICE=${OPTARG};;
-    i) ANT_MEDIA_SERVER_ZIP_FILE=${cat filename};;
+    i) ANT_MEDIA_SERVER_ZIP_FILE=$(cat filename);;
     r) SAVE_SETTINGS=${OPTARG};;
     h) usage 
        exit 1;;
