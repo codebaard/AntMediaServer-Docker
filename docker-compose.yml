@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  ant_server:
+    image: docker.luzifer.cloud/amstest:latest
+    restart: always
+    container_name: ams_server 
+    volumes: 
+      - ${LOG_PATH}:/usr/local/antmedia/log      
+    ports:
+      - 9999:9999
+      - 5080:5080
+    
+    

@@ -34,7 +34,6 @@ RUN mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.ski
 RUN chmod +x repackage_community.sh && ./repackage_community.sh
 
 ## Build Server Image
-
 RUN mkdir /home/ams-dist && cp ./target/ant-media-server-community-*.zip /home/ams-dist/
 WORKDIR /home/ams-dist
 
@@ -61,15 +60,10 @@ RUN rm -rf ./ams-build/Ant-Media-Server-Parent && \
 WORKDIR /usr/local/antmedia/
 ADD ./config/red5-default.xml ./webapps/red5-default.xml
 
-## Setup container specifics
+## Set some container specifics
+VOLUME /usr/local/antmedia/log
+
 EXPOSE 9999
 EXPOSE 5080
 
-## Setup run config
-WORKDIR /home
-ADD ./scripts/startup.sh ./startup.sh
-RUN chmod +x ./startup.sh
-
-#ENTRYPOINT service antmedia start && bash
-#ENTRYPOINT [ "startup.sh", "start" ]
-ENTRYPOINT bash
+ENTRYPOINT [ "start", "-m", "standalone" ]
