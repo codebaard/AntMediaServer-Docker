@@ -31,10 +31,10 @@ RUN git clone https://github.com/ant-media/Ant-Media-Server.git
 
 WORKDIR /home/Ant-Media-Server
 RUN mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-RUN chmod +x repackage_enterprise.sh && ./repackage_enterprise.sh
+RUN chmod +x repackage_community.sh && ./repackage_community.sh
 
 ## Build Server Image
-RUN mkdir /home/ams-dist && cp ./target/ant-media-server-enterprise-*.zip /home/ams-dist/
+RUN mkdir /home/ams-dist && cp ./target/ant-media-server-community-*.zip /home/ams-dist/
 WORKDIR /home/ams-dist
 
 RUN apt-get install -y libx11-dev \
