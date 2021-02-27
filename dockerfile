@@ -54,10 +54,10 @@ RUN apt-get install -y libx11-dev \
 	&& apt-get install -y wget \
 	&& apt-get install -y libcap2
 
-RUN wget https://raw.githubusercontent.com/ant-media/Scripts/master/install_ant-media-server.sh \
-    && chmod 755 install_ant-media-server.sh
+ADD ./scripts/install_ant-media-server.sh ./install_ant-media-server.sh
+RUN chmod +x install_ant-media-server.sh
 
-RUN AMS_ZIP=$(cat filename); ./install_ant-media-server.sh -i $AMS_ZIP
+RUN ./install_ant-media-server.sh
 
 ## clean up
 RUN rm $(ls | grep zip) && rm install_ant-media-server.sh
