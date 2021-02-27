@@ -72,4 +72,5 @@ ENV MONGO_USER=default
 ENV MONGO_PW=default
 
 #ENTRYPOINT [ "./start.sh", "-m", "standalone" ]
-ENTRYPOINT [ "./start.sh", "-m", "cluster", "-h",  MONGO_HOST, "-u", MONGO_USER, "-p", MONGO_PW]
+#ENTRYPOINT [ "./start.sh", "-m", "cluster", "-h",  MONGO_HOST, "-u", MONGO_USER, "-p", MONGO_PW]
+ENTRYPOINT [ "/bin/bash" ]

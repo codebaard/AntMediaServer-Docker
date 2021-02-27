@@ -8,6 +8,9 @@ services:
     volumes: 
       - ${LOG_PATH}:/usr/local/antmedia/log  
     environment:
+      MONGO_HOST: ${MONGODB_HOST}
+      MONGO_USER: ${MONGO_INIT_USERNAME}
+      MONGO_PW: ${MONGO_INIT_PASSWORD}
       VIRTUAL_HOST: ${V_HOST}
       VIRTUAL_PORT: ${V_PORT}
       LETSENCRYPT_HOST: ${LE_HOST}
