@@ -1,7 +1,6 @@
 ## This Dockerfile recreates the steps mentioned at: https://ant-media-docs.readthedocs.io/en/latest/Build-From-Source.html
 # I copied some steps from the AMS manual and incorporated some extras to set up the environment necessary to compile the project,
 # which aren't mentioned at the AMS manual.
-
 FROM ubuntu:20.04
 
 LABEL maintainer="hello@juliusneudecker.com"
@@ -13,6 +12,7 @@ RUN apt-get update && apt-get upgrade -y
 ## Build Server from source
 
 # Setup local environment
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 RUN apt-get install -y git default-jdk maven gpg
 ADD ./config/settings.xml ./m2/settings.xml
 
