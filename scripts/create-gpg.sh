@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#export GNUPGHOME="$(mktemp -d)"
-
 cat >foo <<EOF
      %echo Generating a basic OpenPGP key to build Tomcat inside Docker Container...
      Key-Type: DSA
