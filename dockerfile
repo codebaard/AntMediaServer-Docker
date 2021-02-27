@@ -9,8 +9,8 @@ WORKDIR /home/ams-build
 
 ## Build Server from source
 # Setup local environment
-RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
-    && apt-get upgrade -y \
+RUN  apt-get update && apt-get upgrade -y \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install tzdata \
     && apt-get install -y tzdata git default-jdk maven
 ADD ./config/settings.xml /home/m2/settings.xml
 
