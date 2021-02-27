@@ -28,7 +28,7 @@ RUN cd Ant-Media-Server-Service && mvn clean install -Dmaven.javadoc.skip=true -
 
 RUN git clone https://github.com/ant-media/red5-plugins.git
 
-ADD ./create-gpg.sh ./create-gpg.sh
+ADD ./scripts/create-gpg.sh ./create-gpg.sh
 RUN chmod +x create-gpg.sh && ./create-gpg.sh && rm create-gpg.sh
 
 RUN cd red5-plugins/tomcat && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true

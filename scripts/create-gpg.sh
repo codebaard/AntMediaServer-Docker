@@ -1,5 +1,6 @@
 #!/bin/sh
-export GNUPGHOME="$(mktemp -d)"
+
+#export GNUPGHOME="$(mktemp -d)"
 
 cat >foo <<EOF
      %echo Generating a basic OpenPGP key to build Tomcat inside Docker Container...
@@ -7,8 +8,8 @@ cat >foo <<EOF
      Key-Length: 1024
      Subkey-Type: ELG-E
      Subkey-Length: 1024
-     Name-Real: Docker Build
-     Name-Email: docker@example.com
+     Name-Real: Docker Tomcat
+     Name-Email: dt@example.org
      Expire-Date: 0
      Passphrase: abc
      %commit
@@ -16,7 +17,8 @@ cat >foo <<EOF
 EOF
 gpg --batch --generate-key foo
 
-echo Created GPG Key:
+echo Created GPG key successfully. 
+echo Key created:
 
 gpg --list-secret-keys
 
