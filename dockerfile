@@ -58,8 +58,16 @@ RUN rm -rf ./ams-build/Ant-Media-Server-Parent && \
 
 ## Custom config to make it work as expected - experimental
 WORKDIR /usr/local/antmedia/
-ADD ./scripts/functions.sh ./conf/functions.sh
 ADD ./config/red5-default.xml ./webapps/red5-default.xml
+
+## Enterprise build only
+#ADD ./scripts/functions.sh ./conf/functions.sh
+
+#ENV MONGO_HOST=default
+#ENV MONGO_USER=default
+#ENV MONGO_PW=default
+
+## /Enterprise build
 
 ## Set some container specifics
 VOLUME /usr/local/antmedia/log
@@ -67,10 +75,5 @@ VOLUME /usr/local/antmedia/log
 EXPOSE 9999
 EXPOSE 5080
 
-ENV MONGO_HOST=default
-ENV MONGO_USER=default
-ENV MONGO_PW=default
-
-#ENTRYPOINT [ "./start.sh", "-m", "standalone" ]
-#ENTRYPOINT [ "./start.sh", "-m", "cluster", "-h",  MONGO_HOST, "-u", MONGO_USER, "-p", MONGO_PW]
-ENTRYPOINT ./start.sh -m cluster -h ${MONGO_HOST} -u ${MONGO_USER} -p ${MONGO_PW}
+ENTRYPOINT [ "./start.sh", "-m", "standalone" ]
+#ENTRYPOINT ./start.sh -m cluster -h ${MONGO_HOST} -u ${MONGO_USER} -p ${MONGO_PW}
