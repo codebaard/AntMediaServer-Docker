@@ -11,7 +11,7 @@ WORKDIR /home/ams-build
 # Setup local environment
 RUN  apt-get update && apt-get upgrade -y \
     && DEBIAN_FRONTEND="noninteractive" apt-get install tzdata \
-    && apt-get install -y tzdata git default-jdk maven net-tools
+    && apt-get install -y tzdata git default-jdk maven
 ADD ./config/settings.xml /home/m2/settings.xml
 
 # Compile Components
@@ -60,15 +60,6 @@ RUN rm -rf ./ams-build/Ant-Media-Server-Parent && \
 WORKDIR /usr/local/antmedia/
 ADD ./config/red5-default.xml ./webapps/red5-default.xml
 
-## Enterprise build only
-#ADD ./scripts/functions.sh ./conf/functions.sh
-
-#ENV MONGO_HOST=default
-#ENV MONGO_USER=default
-#ENV MONGO_PW=default
-
-## /Enterprise build
-
 ## Set some container specifics
 VOLUME /usr/local/antmedia/log
 
@@ -76,4 +67,3 @@ EXPOSE 9999
 EXPOSE 5080
 
 ENTRYPOINT [ "./start.sh", "-m", "standalone" ]
-#ENTRYPOINT ./start.sh -m cluster -h ${MONGO_HOST} -u ${MONGO_USER} -p ${MONGO_PW}
