@@ -11,7 +11,7 @@ WORKDIR /home/ams-build
 # Setup local environment
 RUN  apt-get update && apt-get upgrade -y \
     && DEBIAN_FRONTEND="noninteractive" apt-get install tzdata \
-    && apt-get install -y tzdata git default-jdk maven
+    && apt-get install -y git default-jdk maven
 ADD ./config/settings.xml /home/m2/settings.xml
 
 # Compile Components
@@ -20,18 +20,18 @@ RUN git clone https://github.com/ant-media/ant-media-server-parent.git \
     && git clone https://github.com/ant-media/Ant-Media-Server-Service.git \
     && git clone https://github.com/ant-media/red5-plugins.git
 
-RUN cd ant-media-server-parent && mvn clean install -Dgpg.skip=true
-RUN cd Ant-Media-Server-Common && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-RUN cd Ant-Media-Server-Service && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-RUN cd red5-plugins/tomcat && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
+RUN cd ant-media-server-parent && mvn clean install -Dgpg.skip=true \
+    && cd .. && cd Ant-Media-Server-Common && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true \
+    && cd .. && cd Ant-Media-Server-Service && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true\
+    && cd .. && cd red5-plugins/tomcat && mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
 
 WORKDIR /home
 
 RUN git clone https://github.com/ant-media/Ant-Media-Server.git
 
 WORKDIR /home/Ant-Media-Server
-RUN mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true
-RUN chmod +x repackage_community.sh && ./repackage_community.sh
+RUN mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Dgpg.skip=true \
+    && chmod +x repackage_community.sh && ./repackage_community.sh
 
 ## Build Server Image
 RUN mkdir /home/ams-dist && cp ./target/ant-media-server-community-*.zip /home/ams-dist/
